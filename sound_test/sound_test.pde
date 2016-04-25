@@ -43,8 +43,9 @@ int NUM_VALUES = 0;
 void setup() {
 
   //setup rendering..
-  size(640, 360);
+  //size(640, 360);
   smooth();
+  fullScreen();
 
   //Load and play a soundfile and loop it
   sample = new SoundFile(this, "jazz.mp3");
@@ -143,13 +144,20 @@ void draw() {
   fill(0, 0, 0, 100);
   rect(0, 0, width, height);
 
+  // Smooth the rms data by smoothing factor
+  sum += (rms.analyze() - sum) * smoothFactor;  
+
+  // rms.analyze() return a value between 0 and 1. It's
+  // scaled to height/2 and then multiplied by a scale factor
+  float rmsScaled = sum * (height/2) * scale;
+
 
   int index = frameCount % NUM_VALUES;
 
   average.setIndex(index);
-  average.draw();
+  average.draw(sum);
 
-  updatePersons(index);
+  updatePersons(index, rmsScaled);
 
   drawLines();
 
@@ -159,14 +167,8 @@ void draw() {
   //drawGrid();
 }
 
-void updatePersons(int index) {
+void updatePersons(int index, float radius) {
 
-  // Smooth the rms data by smoothing factor
-  sum += (rms.analyze() - sum) * smoothFactor;  
-
-  // rms.analyze() return a value between 0 and 1. It's
-  // scaled to height/2 and then multiplied by a scale factor
-  float rmsScaled = sum * (height/2) * scale;
 
 
 
@@ -189,14 +191,14 @@ void updatePersons(int index) {
 
   for (int i = 0; i < NUM_PERSONS; i ++) {
 
-    persons[i].setRadius(rmsScaled);
+    persons[i].setRadius(radius);
     persons[i].setIndex(index);
     persons[i].draw();
   }
 }
 
 void drawLines() {
-  stroke(255);
+  stroke(255, 50);
   for (int i = 0; i < NUM_PERSONS - 1; i ++) {
     Person p1 = persons[i];
     Person p2 = persons[i + 1];

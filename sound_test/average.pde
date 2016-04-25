@@ -21,12 +21,12 @@ class Average {
 
   }
 
-  public void draw() {
+  public void draw(float offset) {
     
     currentValue = currentValue + (targetValue - currentValue)*EASING;
         
     //update y position
-    y = height - (height * currentValue);
+    y = height - (height * currentValue);// + offset * 100;
     
     //update radius
     //radius = 10 + 60 * currentValue;
@@ -35,8 +35,8 @@ class Average {
     //fill(c);
     //rect(x, y, radius, radius);
     
-    //stroke(255);
-   // line(0, y, width, y);
+    stroke(255, 100 * offset + 100);
+    line(0, y, width, y);
   }
   
 }
