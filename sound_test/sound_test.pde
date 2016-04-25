@@ -33,7 +33,7 @@ PImage img;
 
 //classes
 Person[] persons;
-average[] average;
+Average average;
 
 //static vars
 int NUM_PERSONS = 15;
@@ -62,6 +62,7 @@ void setup() {
 
   //create Persons
   setupPersons();
+  setupAverage();
 }      
 
 
@@ -81,7 +82,7 @@ void setupPersons() {
   int count =0;
   for (TableRow row : table.rows()) {
     for (int i = 0; i < NUM_PERSONS; i ++) {
-      float value = row.getFloat(i) / MAX_VALUE;
+      float value = row.getFloat(i + 1) / MAX_VALUE;
       persons[i].setValue(count, value);
     }
     //increase count
@@ -92,50 +93,41 @@ void setupPersons() {
   int rowWidth = int(width / (NUM_PERSONS + 1));
   for (int i = 0; i < NUM_PERSONS; i ++) {
     int x = (i + 1) * rowWidth;
-    println(i + " : " + x);
+    //println(i + " : " + x);
     persons[i].x = x;
   }
-
-  //todo probably easier to just do this in a for loop (ie, x = i*25)
-  /*persons[14].x = 375;
-   persons[13].x = 350;
-   persons[12].x = 325;
-   persons[11].x = 300;
-   persons[10].x = 275;
-   persons[9].x = 250;
-   persons[8].x = 225;
-   persons[7].x = 200;
-   persons[6].x = 175;
-   persons[5].x = 150;
-   persons[4].x = 125;
-   persons[3].x = 100;
-   persons[2].x = 75;
-   persons[1].x = 50;
-   persons[0].x = 25;*/
 }
 
 
 void setupAverage() {
 
-  NUM_VALUES = table.getRowCount();
+  //NUM_VALUES = table.getRowCount();
   //println(NUM_VALUES + " total rows in table"); 
 
   //instantiate average array
-  average = new average[0];
- 
+  //average = new average[0];
+  float a[] = new float[NUM_VALUES];
+
   //assign values
   int count =0;
   float averageCount = 0;
   for (TableRow row : table.rows()) {
     for (int i = 0; i < NUM_PERSONS; i ++) {
-      float value = row.getFloat(i) / MAX_VALUE;
+      float value = row.getFloat(i + 1) / MAX_VALUE;
       averageCount = averageCount+value;
-      
     }
+
+    averageCount = averageCount/NUM_PERSONS;
+    a[count] = averageCount;
+
+    println(averageCount);
+
+
     //increase count
     count ++;
-    averageCount = averageCount/NUM_PERSONS;
   }
+
+  average = new Average(a);
 }
 
 void draw() {
@@ -146,6 +138,29 @@ void draw() {
 
   //fill(0, 0, 150); only needed when ellipse
 
+  //draw sensor data
+
+  fill(0, 0, 0, 100);
+  rect(0, 0, width, height);
+
+
+  int index = frameCount % NUM_VALUES;
+
+  average.setIndex(index);
+  average.draw();
+
+  updatePersons(index);
+
+  drawLines();
+
+  drawPersons();
+
+  //todo comment this out...
+  //drawGrid();
+}
+
+void updatePersons(int index) {
+
   // Smooth the rms data by smoothing factor
   sum += (rms.analyze() - sum) * smoothFactor;  
 
@@ -153,48 +168,59 @@ void draw() {
   // scaled to height/2 and then multiplied by a scale factor
   float rmsScaled = sum * (height/2) * scale;
 
+
+
   // Draw image at a size based on the audio analysis
-  image(img, 50, 50, rmsScaled, rmsScaled);
-  image(img, 100, 50, rmsScaled, rmsScaled);
-  image(img, 100, 100, rmsScaled, rmsScaled);
+  /*image(img, 50, 50, rmsScaled, rmsScaled);
+   image(img, 100, 50, rmsScaled, rmsScaled);
+   image(img, 100, 100, rmsScaled, rmsScaled);
+   
+   image(img, 150, 150, rmsScaled, rmsScaled);
+   image(img, 200, 150, rmsScaled, rmsScaled);
+   image(img, 200, 200, rmsScaled, rmsScaled);
+   
+   image(img, 400, 250, rmsScaled, rmsScaled);
+   image(img, 450, 250, rmsScaled, rmsScaled);
+   image(img, 400, 300, rmsScaled, rmsScaled);
+   
+   image(img, 500, 150, rmsScaled, rmsScaled);
+   image(img, 500, 200, rmsScaled, rmsScaled);
+   image(img, 550, 150, rmsScaled, rmsScaled);*/
 
-  image(img, 150, 150, rmsScaled, rmsScaled);
-  image(img, 200, 150, rmsScaled, rmsScaled);
-  image(img, 200, 200, rmsScaled, rmsScaled);
-
-  image(img, 400, 250, rmsScaled, rmsScaled);
-  image(img, 450, 250, rmsScaled, rmsScaled);
-  image(img, 400, 300, rmsScaled, rmsScaled);
-
-  image(img, 500, 150, rmsScaled, rmsScaled);
-  image(img, 500, 200, rmsScaled, rmsScaled);
-  image(img, 550, 150, rmsScaled, rmsScaled);
-
-  //draw sensor data
-
-  fill(0, 0, 0, 100);
-  rect(0, 0, width, height);
-
-  int index = frameCount % NUM_VALUES;
   for (int i = 0; i < NUM_PERSONS; i ++) {
+
+    persons[i].setRadius(rmsScaled);
     persons[i].setIndex(index);
     persons[i].draw();
-    average[i].draw();
   }
-  
-  //todo comment this out...
-  drawGrid();
-  
 }
 
+void drawLines() {
+  stroke(255);
+  for (int i = 0; i < NUM_PERSONS - 1; i ++) {
+    Person p1 = persons[i];
+    Person p2 = persons[i + 1];
+
+    line(p1.x, p1.y, p2.x, p2.y);
+  }
+}
+
+void drawPersons() {
+  for (int i = 0; i < NUM_PERSONS; i ++) {
+    Person p = persons[i];
+    //stroke(255,0,0);
+    //line(p.x, p.y, p.x, average.y);
+    
+    persons[i].draw();
+  }
+}
 void drawGrid() {
-  
+
   //just to illustrate the spacing of elements...
   int rowWidth = int(width / (NUM_PERSONS + 1));
   for (int i = 0; i < NUM_PERSONS; i ++) {
     int x = (i + 1) * rowWidth;  
-    stroke(125,0,0);
+    stroke(125, 0, 0);
     line(x, 0, x, height);
   }
-  
 }
