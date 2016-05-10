@@ -6,7 +6,7 @@ class Model {
   boolean isFullScreen;
   //Data from sensors
   Table   table;
-  
+
   int timeCodes[];
 
   Model() {
@@ -14,7 +14,7 @@ class Model {
     config = loadJSONObject("config.json");
 
     JSONObject setup = config.getJSONObject("setup");
-    
+
     isFullScreen = setup.getBoolean("fullscreen");
 
     int mediaIndex = setup.getInt("media");
@@ -62,17 +62,20 @@ class Model {
     hours = hours.substring(hours.length() - 2);
     String minutes = "0" + str(duration/60);
     minutes = minutes.substring(minutes.length() - 2);
-
     println("FINAL :: " + hours + ":" + minutes);
   }
 
   float[] getValuesByPerson(int id) {
     int numRows = getNumRows();
     float[] values = new float[numRows - 1];
-
     int count = 0;
     for (TableRow row : table.rows()) {
-      values[count] = row.getFloat(id + 1);
+      if (count > 0) {
+        float value = row.getFloat(id + 1)/ MAX_VALUE;
+        values[count - 1] = value;
+      }
+      
+      count ++;
     }
 
     return values;
@@ -86,12 +89,17 @@ class Model {
     int count =0;
     float averageCount = 0;
     for (TableRow row : table.rows()) {
+      int valueCounter = 0;
       for (int i = 0; i < NUM_PERSONS; i ++) {
         float value = row.getFloat(i + 1) / MAX_VALUE;
-        averageCount = averageCount+value;
+        //only add if value valid
+        if(value > 0){
+          averageCount = averageCount+value;
+          valueCounter++;
+        }
       }
 
-      averageCount = averageCount/NUM_PERSONS;
+      averageCount = averageCount/valueCounter;
       a[count] = averageCount;
       // println(averageCount);
 
@@ -101,8 +109,8 @@ class Model {
 
     return a;
   }
-  
-  boolean getIsFullScreen(){
+
+  boolean getIsFullScreen() {
     return isFullScreen;
   }
 

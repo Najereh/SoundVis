@@ -18,12 +18,12 @@ class Person {
   public void setValue(int index, float value) {
     values[index] = value;
   }
-  
-  public void setScale(float scale){
+
+  public void setScale(float scale) {
   }  
-  
-  public void setRadius(float r){
-     radius = r; 
+
+  public void setRadius(float r) {
+    radius = r;
   }
 
   public void setIndex(int index) {
@@ -31,20 +31,19 @@ class Person {
   }
 
   public void draw() {
-        //ease currentValue to value of index
+    //ease currentValue to value of index
     currentValue = currentValue + (targetValue - currentValue)*EASING;
-    
+
     //update y position
     y = height - (height * currentValue);
-    
+
     //update radius
     //radius = 10 + 60 * currentValue;
     color c = color(currentValue, 255, 255, 255*currentValue);
     fill(c);
     noStroke();
     ellipse(x, y, radius, radius);
-    
+
     //image(img, x, y, radius, radius);
   }
-  
 }

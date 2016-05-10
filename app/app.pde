@@ -1,15 +1,5 @@
 import processing.video.*;
 import controlP5.*;
-
-/**
- * Processing Sound Library, Example 6
- * 
- * This sketch shows how to use the Amplitude class to analyze a
- * stream of sound. In this case a sample is analyzed. The smoothFactor
- * variable determines how much the signal will be smoothed on a scale
- * from 0 - 1.
- */
-
 import processing.sound.*;
 
 //media
@@ -19,19 +9,12 @@ Amplitude rms;
 Movie myMovie;
 
 // Declare a scaling factor
-float scale = 5.0;
-
+float scale = 0.5;
 // Declare a smooth factor
 float smoothFactor = 0.25;
 
 // Used for smoothing
 float sum;
-
-//timer, every second incoming sensor data
-int timer;
-
-//image
-PImage img;
 
 //classes
 Person[] persons;
@@ -61,12 +44,7 @@ void settings() {
 }
 
 void setup() {
-
   smooth();
-
-  //image
-  img = loadImage("schraffur.png");
-
   setupMedia();
   //create Persons
   setupPersons();
@@ -86,25 +64,14 @@ void setupMedia() {
     sample.loop();
     rms.input(sample);
   } else if (model.getMediaType().equals("video")) {
-    println("initialize!!!! : " + model.getMediaVideoSource());
+    AudioIn channel = new AudioIn(this, 0);
+    channel.start();
 
-
-    /*sample = new SoundFile(this, model.getMediaAudioSource());
-    sample.cue(6);
-    sample.play();
-    */
-    AudioIn channel = new AudioIn(this, 1);
-    
-      rms.input(channel);
-        myMovie = new Movie(this, model.getMediaVideoSource());
+    rms.input(channel);
+    myMovie = new Movie(this, model.getMediaVideoSource());
     myMovie.play();
-    /*
-
-     uiView = new UIView(this, myMovie);
-     */
+    uiView = new UIView(this, myMovie);
   }
-
-  // rms.input(sample);
 }
 
 
@@ -155,64 +122,38 @@ void draw() {
 
   image(myMovie, 0, 0, width/2, height);
 
-
-  //fill(0, 0, 150); only needed when ellipse
-
-  //draw sensor data
-
-  //fill(0, 0, 0, 100);
-  //rect(0, 0, width/2, height);
-
   // Smooth the rms data by smoothing factor
-  sum += 0.0;//(rms.analyze() - sum) * smoothFactor;  
-  //println(rms.analyze());
-  // rms.analyze() return a value between 0 and 1. It's
-  // scaled to height/2 and then multiplied by a scale factor
+  sum += (rms.analyze() - sum) * smoothFactor;  
   float rmsScaled = sum * (height/2) * scale;
 
   int currentMillis = millis();
   int elapsedMillis = currentMillis - lastMillis;
+
   if (elapsedMillis > 1000) {
-    int index = frameCount % NUM_VALUES;
-    average.setIndex(index);
-    updatePersons(index, rmsScaled);
+    currentIndex ++;
+    average.setIndex(currentIndex);
+    updatePersons(currentIndex, rmsScaled);
+
+    //reset 
+    lastMillis = lastMillis + 1000;
   }
-  //reset 
-  lastMillis = lastMillis + 1000;
 
 
-  //average.draw(sum);
-  //drawLines();
-  //drawPersons();
-
+  pushMatrix();
+  translate(width / 2, 0);
+  fill(0, 0, 0, 100);
+  rect(0, 0, width/2, height);
+  average.draw(sum);
+  drawLines();
+  drawPersons(rmsScaled);
+  popMatrix();
   //todo comment this out...
   //drawGrid();
 }
 
 void updatePersons(int index, float radius) {
-
-
-  // Draw image at a size based on the audio analysis
-  /*image(img, 50, 50, rmsScaled, rmsScaled);
-   image(img, 100, 50, rmsScaled, rmsScaled);
-   image(img, 100, 100, rmsScaled, rmsScaled);
-   
-   image(img, 150, 150, rmsScaled, rmsScaled);
-   image(img, 200, 150, rmsScaled, rmsScaled);
-   image(img, 200, 200, rmsScaled, rmsScaled);
-   
-   image(img, 400, 250, rmsScaled, rmsScaled);
-   image(img, 450, 250, rmsScaled, rmsScaled);
-   image(img, 400, 300, rmsScaled, rmsScaled);
-   
-   image(img, 500, 150, rmsScaled, rmsScaled);
-   image(img, 500, 200, rmsScaled, rmsScaled);
-   image(img, 550, 150, rmsScaled, rmsScaled);*/
-
   for (int i = 0; i < NUM_PERSONS; i ++) {
-    persons[i].setRadius(radius);
     persons[i].setIndex(index);
-    persons[i].draw();
   }
 }
 
@@ -226,8 +167,9 @@ void drawLines() {
   }
 }
 
-void drawPersons() {
+void drawPersons(float radius) {
   for (int i = 0; i < NUM_PERSONS; i ++) {
+    persons[i].setRadius(radius);
     persons[i].draw();
   }
 }

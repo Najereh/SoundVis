@@ -2,7 +2,7 @@
 class UIView {
 
   ControlP5 controller;
-  boolean visible = false;
+  boolean visible = true;
   Movie myMovie;
 
   boolean isPaused = false;
@@ -12,8 +12,8 @@ class UIView {
     myMovie = movie;
 
     controller = new ControlP5(parent);
-    controller.addToggle("pause").setSize(50, 50);
-    controller.setVisible(false);
+    controller.addToggle("toggle").setSize(50, 50).setValue(true);
+    // controller.setVisible(false);
   }
 
 
@@ -27,14 +27,12 @@ class UIView {
     controller.hide();
   }
 
-  void toggle(boolean paused) {
-
-    if (isPaused) {
-      myMovie.play();
-    } else {
-      myMovie.pause();
-    }
-
-    isPaused = !isPaused;
+void toggle(boolean theFlag) {
+  if(theFlag==true) {
+  //  col = color(255);
+  } else {
+    //col = color(100);
   }
+  println("a toggle event.");
+}
 }
