@@ -55,6 +55,7 @@ class Model {
       timecode = table.getInt(table.getRowCount() -1, 0);
     }
 
+
     int duration = table.getRowCount();
     String hours =  "0" + str(duration / 3600);
     duration = duration - (duration / 3600)*3600;
@@ -117,9 +118,14 @@ class Model {
     return timecodes.getInt("end");
   }
 
-  String getMediaSource () {
-    return media.getString("src");
+  String getMediaVideoSource () {
+    return media.getString("videoSrc");
   }
+
+  String getMediaAudioSource () {
+    return media.getString("audioSrc");
+  }
+
 
   String getMediaType () {
     return media.getString("type");

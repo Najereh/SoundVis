@@ -46,7 +46,7 @@ int NUM_VALUES = 0;
 
 
 int millisStart;
-int lastMillis;
+int lastMillis = -1;
 
 int currentIndex = 0;
 
@@ -56,7 +56,7 @@ void settings() {
   if (model.getIsFullScreen()) {
     fullScreen();
   } else {
-    size(640, 360);
+    size(1280, 360);
   }
 }
 
@@ -77,29 +77,34 @@ void setupMedia() {
   println("\n===SETUP MEDIA===");
   println("Type : " + model.getMediaType());
   // Create and patch the rms tracker
-  
+
   rms = new Amplitude(this);
 
   if (model.getMediaType().equals("audio")) {
     //Load and play a soundfile and loop it
-    sample = new SoundFile(this, model.getMediaSource());
+    sample = new SoundFile(this, model.getMediaAudioSource());
     sample.loop();
     rms.input(sample);
   } else if (model.getMediaType().equals("video")) {
+    println("initialize!!!! : " + model.getMediaVideoSource());
 
-    println("src : " + model.getMediaSource());
-    myMovie = new Movie(this, model.getMediaSource());
+
+    /*sample = new SoundFile(this, model.getMediaAudioSource());
+    sample.cue(6);
+    sample.play();
+    */
+    AudioIn channel = new AudioIn(this, 1);
+    
+      rms.input(channel);
+        myMovie = new Movie(this, model.getMediaVideoSource());
     myMovie.play();
+    /*
 
-    AudioIn input = new AudioIn(this, 0); //Create an Audio input and grab the 1st channel
-    input.start();
-
-     
-     rms.input(myMovie);
-     
-
-    uiView = new UIView(this, myMovie);
+     uiView = new UIView(this, myMovie);
+     */
   }
+
+  // rms.input(sample);
 }
 
 
@@ -145,19 +150,22 @@ void setupAverage() {
 void draw() {
 
   // Set background color, noStroke and fill color
-  background(0, 0, 0);
+  background(255);//0, 0, 0);
   noStroke();
+
+  image(myMovie, 0, 0, width/2, height);
+
 
   //fill(0, 0, 150); only needed when ellipse
 
   //draw sensor data
 
-  fill(0, 0, 0, 100);
-  rect(0, 0, width, height);
+  //fill(0, 0, 0, 100);
+  //rect(0, 0, width/2, height);
 
   // Smooth the rms data by smoothing factor
-  sum += (rms.analyze() - sum) * smoothFactor;  
-  println(rms.analyze());
+  sum += 0.0;//(rms.analyze() - sum) * smoothFactor;  
+  //println(rms.analyze());
   // rms.analyze() return a value between 0 and 1. It's
   // scaled to height/2 and then multiplied by a scale factor
   float rmsScaled = sum * (height/2) * scale;
@@ -170,11 +178,12 @@ void draw() {
     updatePersons(index, rmsScaled);
   }
   //reset 
-  lastMillis = currentMillis;
+  lastMillis = lastMillis + 1000;
 
-  average.draw(sum);
-  drawLines();
-  drawPersons();
+
+  //average.draw(sum);
+  //drawLines();
+  //drawPersons();
 
   //todo comment this out...
   //drawGrid();
@@ -226,10 +235,14 @@ void drawPersons() {
 void drawGrid() {
 
   //just to illustrate the spacing of elements...
-  int rowWidth = int(width / (NUM_PERSONS + 1));
+  int rowWidth = int((width * 0.5) / (NUM_PERSONS + 1));
   for (int i = 0; i < NUM_PERSONS; i ++) {
     int x = (i + 1) * rowWidth;  
     stroke(125, 0, 0);
     line(x, 0, x, height);
   }
+}
+
+void movieEvent(Movie m) {
+  m.read();
 }

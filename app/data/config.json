@@ -28,11 +28,12 @@
   "media": [
     {
       "type": "video",
-      "src": "CWI Jazz 0.9.7.mp4"
+      "videoSrc": "CWI Jazz 0.9.7.mp4",
+      "audioSrc" : "CWI Jazz 0.9.7_audio.mp3"
     },
     {
       "type": "audio",
-      "src": "jazz.mp3"
+      "audioSrc": "jazz.mp3"
     }
   ]
 }
