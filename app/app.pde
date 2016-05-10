@@ -1,3 +1,6 @@
+import processing.video.*;
+import controlP5.*;
+
 /**
  * Processing Sound Library, Example 6
  * 
@@ -9,9 +12,11 @@
 
 import processing.sound.*;
 
-// Declare the processing sound variables 
+//media
 SoundFile sample;
 Amplitude rms;
+
+Movie myMovie;
 
 // Declare a scaling factor
 float scale = 5.0;
@@ -25,70 +30,102 @@ float sum;
 //timer, every second incoming sensor data
 int timer;
 
-//Data from sensors
-Table table;
-
 //image
 PImage img;
 
 //classes
 Person[] persons;
 Average average;
+UIView uiView;
+Model model;
 
 //static vars
 int NUM_PERSONS = 15;
 float MAX_VALUE = 1000.0;
 int NUM_VALUES = 0;
 
+
+int millisStart;
+int lastMillis;
+
+int currentIndex = 0;
+
+void settings() {
+
+  model = new Model();
+  if (model.getIsFullScreen()) {
+    fullScreen();
+  } else {
+    size(640, 360);
+  }
+}
+
 void setup() {
 
-  //setup rendering..
-  //size(640, 360);
   smooth();
-  fullScreen();
-
-  //Load and play a soundfile and loop it
-  sample = new SoundFile(this, "jazz.mp3");
-  sample.loop();
-
-  // Create and patch the rms tracker
-  rms = new Amplitude(this);
-  rms.input(sample);
 
   //image
   img = loadImage("schraffur.png");
 
-  //SENSORDATA
-  table = loadTable("out_2.csv", "header");
-
+  setupMedia();
   //create Persons
   setupPersons();
   setupAverage();
 }      
 
+void setupMedia() {
+  println("\n===SETUP MEDIA===");
+  println("Type : " + model.getMediaType());
+  // Create and patch the rms tracker
+  
+  rms = new Amplitude(this);
+
+  if (model.getMediaType().equals("audio")) {
+    //Load and play a soundfile and loop it
+    sample = new SoundFile(this, model.getMediaSource());
+    sample.loop();
+    rms.input(sample);
+  } else if (model.getMediaType().equals("video")) {
+
+    println("src : " + model.getMediaSource());
+    myMovie = new Movie(this, model.getMediaSource());
+    myMovie.play();
+
+    AudioIn input = new AudioIn(this, 0); //Create an Audio input and grab the 1st channel
+    input.start();
+
+     
+     rms.input(myMovie);
+     
+
+    uiView = new UIView(this, myMovie);
+  }
+}
+
 
 void setupPersons() {
 
-  NUM_VALUES = table.getRowCount();
+  NUM_VALUES = model.getNumRows();
   println(NUM_VALUES + " total rows in table"); 
 
   //instantiate Person array
   persons = new Person[NUM_PERSONS];
   for (int i = 0; i < NUM_PERSONS; i ++) {
-    Person person = new Person(NUM_VALUES);
+    float[] values = model.getValuesByPerson(i);
+    Person person = new Person(i, values);
     persons[i] = person;
   }
 
   //assign values
-  int count =0;
-  for (TableRow row : table.rows()) {
-    for (int i = 0; i < NUM_PERSONS; i ++) {
-      float value = row.getFloat(i + 1) / MAX_VALUE;
-      persons[i].setValue(count, value);
-    }
-    //increase count
-    count ++;
-  }
+  /*int count =0;
+   //for (TableRow row : table.rows()) {
+   for (int i = 0; i < NUM_PERSONS; i ++) {
+   float value = row.getFloat(i + 1) / MAX_VALUE;
+   persons[i].setValue(count, value);
+   }
+   //increase count
+   count ++;
+   }*/
 
   //position Persons
   int rowWidth = int(width / (NUM_PERSONS + 1));
@@ -101,33 +138,7 @@ void setupPersons() {
 
 
 void setupAverage() {
-
-  //NUM_VALUES = table.getRowCount();
-  //println(NUM_VALUES + " total rows in table"); 
-
-  //instantiate average array
-  //average = new average[0];
-  float a[] = new float[NUM_VALUES];
-
-  //assign values
-  int count =0;
-  float averageCount = 0;
-  for (TableRow row : table.rows()) {
-    for (int i = 0; i < NUM_PERSONS; i ++) {
-      float value = row.getFloat(i + 1) / MAX_VALUE;
-      averageCount = averageCount+value;
-    }
-
-    averageCount = averageCount/NUM_PERSONS;
-    a[count] = averageCount;
-
-    println(averageCount);
-
-
-    //increase count
-    count ++;
-  }
-
+  float[] a = model.getAverageValues();
   average = new Average(a);
 }
 
@@ -146,21 +157,23 @@ void draw() {
 
   // Smooth the rms data by smoothing factor
   sum += (rms.analyze() - sum) * smoothFactor;  
-
+  println(rms.analyze());
   // rms.analyze() return a value between 0 and 1. It's
   // scaled to height/2 and then multiplied by a scale factor
   float rmsScaled = sum * (height/2) * scale;
 
+  int currentMillis = millis();
+  int elapsedMillis = currentMillis - lastMillis;
+  if (elapsedMillis > 1000) {
+    int index = frameCount % NUM_VALUES;
+    average.setIndex(index);
+    updatePersons(index, rmsScaled);
+  }
+  //reset 
+  lastMillis = currentMillis;
 
-  int index = frameCount % NUM_VALUES;
-
-  average.setIndex(index);
   average.draw(sum);
-
-  updatePersons(index, rmsScaled);
-
   drawLines();
-
   drawPersons();
 
   //todo comment this out...
@@ -168,8 +181,6 @@ void draw() {
 }
 
 void updatePersons(int index, float radius) {
-
-
 
 
   // Draw image at a size based on the audio analysis
@@ -190,7 +201,6 @@ void updatePersons(int index, float radius) {
    image(img, 550, 150, rmsScaled, rmsScaled);*/
 
   for (int i = 0; i < NUM_PERSONS; i ++) {
-
     persons[i].setRadius(radius);
     persons[i].setIndex(index);
     persons[i].draw();
@@ -209,13 +219,10 @@ void drawLines() {
 
 void drawPersons() {
   for (int i = 0; i < NUM_PERSONS; i ++) {
-    Person p = persons[i];
-    //stroke(255,0,0);
-    //line(p.x, p.y, p.x, average.y);
-    
     persons[i].draw();
   }
 }
+
 void drawGrid() {
 
   //just to illustrate the spacing of elements...

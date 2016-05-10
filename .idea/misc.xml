@@ -10,8 +10,4 @@
     <ConfirmationsSetting value="0" id="Add" />
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
-  <component name="TypeScriptCompiler">
-    <option name="isCompilerEnabled" value="true" />
-    <option name="typeScriptCompilerParams" value="-module amd -t ES5" />
-  </component>
 </project>

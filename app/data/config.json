@@ -1,0 +1,38 @@
+{
+  "setup": {
+    "data": 0,
+    "media":0,
+    "timecodes": 0,
+    "sensors" : 0,
+    "fullscreen" : false
+  },
+  "sensors": [
+    {
+      "colors": [
+        "#ff0000",
+        "#00ff00"
+      ]
+    }
+  ],
+  "timecodes": [
+    {
+      "start": 1461955488,
+      "end": 1461959209
+    }
+  ],
+  "data": [
+    {
+      "src": "group_16.csv"
+    }
+  ],
+  "media": [
+    {
+      "type": "video",
+      "src": "CWI Jazz 0.9.7.mp4"
+    },
+    {
+      "type": "audio",
+      "src": "jazz.mp3"
+    }
+  ]
+}

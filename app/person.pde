@@ -7,11 +7,12 @@ class Person {
   float currentValue;
   float targetValue;
   float EASING = 0.1;
-  
+  int id;
 
-  Person(int numValues) {
+  Person(int id, float[] values) {
     //instantiate array
-    values = new float[numValues];
+    this.id = id;
+    this.values = values;
   }
 
   public void setValue(int index, float value) {
