@@ -74,7 +74,7 @@ void setupMedia() {
     rms.input(channel);
     myMovie = new Movie(this, model.getMediaVideoSource());
     myMovie.play();
-    myMovie.volume(0.0);
+    //myMovie.volume(0.0);
   }
 }
 
