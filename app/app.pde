@@ -10,7 +10,7 @@ float rmsScaled;
 Movie myMovie;
 
 // Declare a scaling factor
-float scale = 2;
+float scale = 5;
 // Declare a smooth factor
 float smoothFactor = 0.25;
 
