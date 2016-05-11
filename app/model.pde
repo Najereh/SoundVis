@@ -82,9 +82,13 @@ class Model {
     int count = 0;
     for (TableRow row : table.rows()) {
       if (count > 0) {
+         if (values [count - 1] == 0){
+           // HELP: How do I access the average?
+          values[count - 1] = average;}            
+       else{ 
         float value = row.getFloat(id + 1)/ MAX_VALUE;
         values[count - 1] = value;
-      }
+      }}
 
       count ++;
     }
