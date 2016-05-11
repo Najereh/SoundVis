@@ -104,11 +104,16 @@ class Model {
   float[] getValuesByPerson(int id) {
     int numRows = getNumRows();
     float[] values = new float[numRows - 1];
+    float[] averages = getAverageValues();
     int count = 0;
     for (TableRow row : table.rows()) {
       if (count > 0) {
-        float value = row.getFloat(id + 1)/ MAX_VALUE;
-        values[count - 1] = value;
+        if (values [count - 1] == 0) {
+          values[count - 1] = averages[count - 1];
+        } else { 
+          float value = row.getFloat(id + 1)/ MAX_VALUE;
+          values[count - 1] = value;
+        }
       }
 
       count ++;
@@ -137,7 +142,7 @@ class Model {
 
       averageCount = averageCount/valueCounter;
       a[count] = averageCount;
-      // println(averageCount);
+      //println(averageCount);
 
       //increase count
       count ++;
