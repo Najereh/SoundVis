@@ -130,7 +130,7 @@ void draw() {
   update();
 
   // Set background color, noStroke and fill color
-  background(255);//0, 0, 0);
+  background(256);//0, 0, 0);
   noStroke();
   image(myMovie, 0, 0, width/2, height);
 
