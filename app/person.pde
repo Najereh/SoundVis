@@ -42,7 +42,7 @@ class Person {
     color c = model.getColorByIndex(id);
     fill(c);
     noStroke();
-    ellipse(x, y, 100, 100);
+    ellipse(x, y, radius, radius);
 
     //image(img, x, y, radius, radius);
   }
