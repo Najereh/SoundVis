@@ -96,7 +96,7 @@ class Model {
 
   color getColorByIndex(int id){
     int index = floor(colors.length * (float)id / NUM_PERSONS);
-    println(index, id, max);
+    //println(index, id, max);
     return colors[index];
   }
   

@@ -39,10 +39,10 @@ class Person {
 
     //update radius
     //radius = 10 + 60 * currentValue;
-    color c = color(currentValue, 255, 255, 255*currentValue);
+    color c = model.getColorByIndex(id);
     fill(c);
     noStroke();
-    ellipse(x, y, radius, radius);
+    ellipse(x, y, 100, 100);
 
     //image(img, x, y, radius, radius);
   }
