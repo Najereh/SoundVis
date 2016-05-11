@@ -3,6 +3,9 @@ class Model {
   JSONObject config;
   JSONObject media;
   JSONObject timecodes;
+  JSONObject sensors;
+
+  color[] colors;
   boolean isFullScreen;
   //Data from sensors
   Table   table;
@@ -22,7 +25,8 @@ class Model {
     int mediaIndex = setup.getInt("media");
     media = config.getJSONArray("media").getJSONObject(mediaIndex);
 
-    int sensors = setup.getInt("sensors");
+    int sensorIndex = setup.getInt("sensors");
+    sensors = config.getJSONArray("sensors").getJSONObject(sensorIndex);
 
     int timecodeIndex = setup.getInt("timecodes");
     timecodes = config.getJSONArray("timecodes").getJSONObject(timecodeIndex);
@@ -34,6 +38,20 @@ class Model {
     table = loadTable(src, "header");
 
     setupTable();
+
+    setupColors();
+  }
+
+  void setupColors() {
+
+    JSONArray colors = sensors.getJSONArray("colors");
+    this.colors = new color[colors.size()];
+    for (int i = 0; i < colors.size(); i ++) {
+      String c = colors.getString(i);
+      c = c.substring(1);
+      color col = unhex(c);
+      this.colors[i] = col;
+    }
   }
 
   void setupTable() {
@@ -67,7 +85,7 @@ class Model {
       }
       count ++;
     }
-    
+
     String hours =  "0" + str(duration / 3600);
     duration = duration - (duration / 3600)*3600;
     hours = hours.substring(hours.length() - 2);
@@ -76,6 +94,13 @@ class Model {
     println("FINAL :: " + hours + ":" + minutes);
   }
 
+  color getColorByIndex(int id){
+    int index = floor(colors.length * (float)id / NUM_PERSONS);
+    println(index, id, max);
+    return colors[index];
+  }
+  
+  
   float[] getValuesByPerson(int id) {
     int numRows = getNumRows();
     float[] values = new float[numRows - 1];
@@ -143,10 +168,10 @@ class Model {
     return table.getRowCount();
   }
 
-  int getCurrentTimecode(){
-     return timeCodes[currentIndex]; 
+  int getCurrentTimecode() {
+    return timeCodes[currentIndex];
   }
-  
+
   int getTimecodeStart() {
     return timecodes.getInt("start");
   }

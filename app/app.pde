@@ -88,6 +88,7 @@ void setupPersons() {
   persons = new Person[NUM_PERSONS];
   for (int i = 0; i < NUM_PERSONS; i ++) {
     float[] values = model.getValuesByPerson(i);
+    color c = model.getColorByIndex(i);
     Person person = new Person(i, values);
     persons[i] = person;
   }
