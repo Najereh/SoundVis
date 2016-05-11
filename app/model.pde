@@ -94,13 +94,12 @@ class Model {
     println("FINAL :: " + hours + ":" + minutes);
   }
 
-  color getColorByIndex(int id){
+  color getColorByIndex(int id) {
     int index = floor(colors.length * (float)id / NUM_PERSONS);
-    //println(index, id, max);
     return colors[index];
   }
-  
-  
+
+
   float[] getValuesByPerson(int id) {
     int numRows = getNumRows();
     float[] values = new float[numRows - 1];
@@ -108,11 +107,11 @@ class Model {
     int count = 0;
     for (TableRow row : table.rows()) {
       if (count > 0) {
-        //println(values [count - 1]);
-        if (values [count - 1] == 0) {
+        float value = row.getFloat(id + 1)/ MAX_VALUE;
+
+        if (value == 0) {
           values[count - 1] = averages[count - 1];
         } else { 
-          float value = row.getFloat(id + 1)/ MAX_VALUE;
           values[count - 1] = value;
         }
       }

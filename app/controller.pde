@@ -43,10 +43,16 @@ class Controller {
     // add a vertical slider
     slider = controller.addSlider("slider")
       .setPosition(110, height - 20)
-      .setSize((width/2) - 220, 3)
+      .setSize((width/2) - 220, 5)
       .setRange(0, 100)
       .setLabelVisible(false)
       .setValue(128);
+
+    slider.onClick(new CallbackListener() {
+      public void controlEvent(CallbackEvent theEvent) {
+        setValue(slider.getValue());
+      }
+    } );
 
     slider.onPress(new CallbackListener() {
       public void controlEvent(CallbackEvent theEvent) {
@@ -58,6 +64,7 @@ class Controller {
 
     slider.onDrag(new CallbackListener() {
       public void controlEvent(CallbackEvent theEvent) {
+        sliderDown = true;
         setValue(slider.getValue());
       }
     } 

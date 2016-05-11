@@ -23,7 +23,7 @@ Average average;
 Model model;
 
 //static vars
-int NUM_PERSONS = 1;
+int NUM_PERSONS = 19;
 float MAX_VALUE = 1000.0;
 int NUM_VALUES = 0;
 
@@ -74,7 +74,7 @@ void setupMedia() {
     rms.input(channel);
     myMovie = new Movie(this, model.getMediaVideoSource());
     myMovie.play();
-   myMovie.volume(0.0);
+    myMovie.volume(0.0);
   }
 }
 
@@ -115,11 +115,10 @@ void update() {
   controller.update();
 
   int currentIndex = floor(myMovie.time());
-  
+
   if (model.setCurrentIndex(currentIndex)) {
     average.setIndex(currentIndex);
     updatePersons(currentIndex, rmsScaled);
-    //println("update timecode : " + model.getCurrentTimecode());
   }
 }
 
@@ -179,7 +178,6 @@ void drawLines1() {
     //line(p1.x, p1.y, p1.x-15, average.y);
     line(p1.x, p1.y, p1.x+20, average.y);
     line(p1.x, p1.y, p1.x-20, average.y);
-  
   }
 }
 
@@ -188,7 +186,6 @@ void drawPersons(float radius) {
   for (int i = 0; i < NUM_PERSONS; i ++) {
     persons[i].setRadius(radius);
     persons[i].draw();
-   
   }
 }
 
