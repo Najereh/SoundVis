@@ -10,7 +10,7 @@ float rmsScaled;
 Movie myMovie;
 
 // Declare a scaling factor
-float scale = 1.3;
+float scale = 2;
 // Declare a smooth factor
 float smoothFactor = 0.25;
 
@@ -188,12 +188,12 @@ void drawLines1() {
   stroke(255, 50);
   for (int i = 0; i < NUM_PERSONS; i ++) {
     Person p1 = persons[i];
-    line(p1.x, p1.y, p1.x+5, average.y);
-    line(p1.x, p1.y, p1.x-5, average.y);
+    line(p1.x, p1.y, p1.x, average.y);
+    //line(p1.x, p1.y, p1.x-5, average.y);
     line(p1.x, p1.y, p1.x+10, average.y);
     line(p1.x, p1.y, p1.x-10, average.y);
-    line(p1.x, p1.y, p1.x+15, average.y);
-    line(p1.x, p1.y, p1.x-15, average.y);
+    //line(p1.x, p1.y, p1.x+15, average.y);
+    //line(p1.x, p1.y, p1.x-15, average.y);
     line(p1.x, p1.y, p1.x+20, average.y);
     line(p1.x, p1.y, p1.x-20, average.y);
   
