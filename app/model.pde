@@ -108,6 +108,7 @@ class Model {
     int count = 0;
     for (TableRow row : table.rows()) {
       if (count > 0) {
+        //println(values [count - 1]);
         if (values [count - 1] == 0) {
           values[count - 1] = averages[count - 1];
         } else { 
