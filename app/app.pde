@@ -75,7 +75,7 @@ void setupMedia() {
     rms.input(channel);
     myMovie = new Movie(this, model.getMediaVideoSource());
     myMovie.play();
-   // myMovie.volume(0.0);
+    myMovie.volume(0.0);
   }
 }
 
@@ -93,17 +93,6 @@ void setupPersons() {
     persons[i] = person;
   }
 
-  //assign values
-  /*int count =0;
-   //for (TableRow row : table.rows()) {
-   for (int i = 0; i < NUM_PERSONS; i ++) {
-   float value = row.getFloat(i + 1) / MAX_VALUE;
-   persons[i].setValue(count, value);
-   }
-   //increase count
-   count ++;
-   }*/
-
   //position Persons
   int rowWidth = int((width * 0.5) / (NUM_PERSONS + 1));
   for (int i = 0; i < NUM_PERSONS; i ++) {
@@ -119,34 +108,28 @@ void setupAverage() {
 }
 
 /**
-* Handle app state here
-*/
+ * Handle app state here
+ */
 void update() {
 
   uiView.update();
 
-  if (!isPaused) {
-    int currentMillis = millis();
-    int elapsedMillis = currentMillis - lastMillis;
-
-    if (elapsedMillis > 1000) {
-      currentIndex ++;
-      average.setIndex(currentIndex);
-      updatePersons(currentIndex, rmsScaled);
-
-      //reset 
-      lastMillis = lastMillis + 1000;
-    }
+  int currentIndex = floor(myMovie.time());
+  
+  if (model.setCurrentIndex(currentIndex)) {
+    average.setIndex(currentIndex);
+    updatePersons(currentIndex, rmsScaled);
+    //println("update timecode : " + model.getCurrentTimecode());
   }
 }
 
 /**
-* Handle app rendering here
-*/
+ * Handle app rendering here
+ */
 void draw() {
-  
+
   update();
-  
+
   // Set background color, noStroke and fill color
   background(255);//0, 0, 0);
   noStroke();

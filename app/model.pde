@@ -9,6 +9,8 @@ class Model {
 
   int timeCodes[];
 
+  int currentIndex = 0;
+
   Model() {
 
     config = loadJSONObject("config.json");
@@ -40,6 +42,7 @@ class Model {
     int end = getTimecodeEnd();
     println("===SETUP TIMECODES===");
     println("total num : " + table.getRowCount());
+
     //remove all rows before start
     int timecode = table.getInt(0, 1);
     while (timecode != start) {
@@ -49,14 +52,22 @@ class Model {
 
     //remove all rows after end
     timecode = table.getInt(table.getRowCount() -1, 0);
-
     while (timecode != end) {
       table.removeRow(table.getRowCount() - 1);
       timecode = table.getInt(table.getRowCount() -1, 0);
     }
 
-
-    int duration = table.getRowCount();
+    //add timecodes to array
+    int duration = table.getRowCount() - 1;
+    timeCodes = new int[duration];
+    int count = 0;
+    for (TableRow row : table.rows()) {
+      if (count > 0) {
+        timeCodes[count - 1] = row.getInt(0);
+      }
+      count ++;
+    }
+    
     String hours =  "0" + str(duration / 3600);
     duration = duration - (duration / 3600)*3600;
     hours = hours.substring(hours.length() - 2);
@@ -74,7 +85,7 @@ class Model {
         float value = row.getFloat(id + 1)/ MAX_VALUE;
         values[count - 1] = value;
       }
-      
+
       count ++;
     }
 
@@ -93,7 +104,7 @@ class Model {
       for (int i = 0; i < NUM_PERSONS; i ++) {
         float value = row.getFloat(i + 1) / MAX_VALUE;
         //only add if value valid
-        if(value > 0){
+        if (value > 0) {
           averageCount = averageCount+value;
           valueCounter++;
         }
@@ -110,6 +121,20 @@ class Model {
     return a;
   }
 
+  boolean setCurrentIndex(int value) {
+    if (value >= 0 && value < timeCodes.length) {
+      if (currentIndex != value) {
+        currentIndex = value;
+        return true;
+      }
+    }
+    return false;
+  }
+
+  int getCurrentIndex() {
+    return currentIndex;
+  }
+
   boolean getIsFullScreen() {
     return isFullScreen;
   }
@@ -118,6 +143,10 @@ class Model {
     return table.getRowCount();
   }
 
+  int getCurrentTimecode(){
+     return timeCodes[currentIndex]; 
+  }
+  
   int getTimecodeStart() {
     return timecodes.getInt("start");
   }

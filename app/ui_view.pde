@@ -1,14 +1,18 @@
 class UIView {
 
   ControlP5 controller;
-  boolean visible = true;
+
   Movie myMovie;
   Slider slider;
+  Toggle toggle;
+
   boolean isPaused = false;
+  boolean visible = true;
+  boolean sliderDown = false;
+  boolean keyDown = false;
 
   float sliderPosition = 0.0;
   float targetPosition = 0.0;
-  boolean sliderDown = false;
 
   int lastUpdate = -1;
 
@@ -17,11 +21,24 @@ class UIView {
     myMovie = movie;
 
     controller = new ControlP5(parent);
-    controller.addToggle("toggle")
+    toggle = controller.addToggle("toggle")
       .setSize(20, 20)
       .setLabelVisible(false)
       .setPosition(80, height - 30)
       .setValue(false);
+
+    toggle.onChange(new CallbackListener() {
+      public void controlEvent(CallbackEvent theEvent) {
+        boolean paused = toggle.getBooleanValue();
+        if (!paused) {
+          myMovie.play();
+        } else {
+          myMovie.pause();
+        }
+        isPaused = paused;
+      }
+    }
+    );
 
     // add a vertical slider
     slider = controller.addSlider("slider")
@@ -34,15 +51,14 @@ class UIView {
     slider.onPress(new CallbackListener() {
       public void controlEvent(CallbackEvent theEvent) {
         sliderDown = true;
+        setValue(slider.getValue());
       }
     } 
     );
 
     slider.onDrag(new CallbackListener() {
       public void controlEvent(CallbackEvent theEvent) {
-        float value = slider.getValue();
-        println("slider : " + value);
-        //  myMovie.jump((value / 100.0) * myMovie.duration());
+        setValue(slider.getValue());
       }
     } 
     );
@@ -55,21 +71,41 @@ class UIView {
     );
   }
 
+  public void setValue(float value) {
+    targetPosition = (value / 100.0);
+    myMovie.jump(targetPosition * myMovie.duration());
+  }
+
 
   public void update() {
 
-    if (lastUpdate - millis() > 1000) {
+    // println(sliderDown);
+
+    if (millis() - lastUpdate  > 1000) {
       if (!sliderDown) {
         targetPosition = myMovie.time() / myMovie.duration();
+        //println(targetPosition, myMovie.time(), myMovie.duration());
       }
       lastUpdate = millis();
     }
-   // println(sliderDown);
+
+    sliderPosition += (targetPosition - sliderPosition)*0.5;
 
     if (!sliderDown) {
-      sliderPosition += (targetPosition - sliderPosition)*0.5;
+      slider.setValue(sliderPosition * 100.0);
     } else {
       sliderPosition = slider.getValue() / 100.0;
+    }
+
+    if (keyPressed) {
+      if (!keyDown) {
+        keyDown = true;
+        toggleShow();
+      }
+    } else {
+      if (keyDown) {
+        keyDown = false;
+      }
     }
   }
 
@@ -83,22 +119,11 @@ class UIView {
     controller.hide();
   }
 
-
-  void toggle(boolean paused) {
-
-    println("pause! : " + paused);
-
-    if (!paused) {
-      myMovie.play();
+  void toggleShow() {
+    if (this.visible) {
+      hide();
     } else {
-      myMovie.pause();
+      show();
     }
-
-    isPaused = paused;
-  }
-
-  void updateSLider(float value) {
-    println("slider : " + value);
-    myMovie.jump((value / 100.0) * myMovie.duration());
   }
 }
