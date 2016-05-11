@@ -5,6 +5,7 @@ import processing.sound.*;
 //media
 SoundFile sample;
 Amplitude rms;
+float rmsScaled;
 
 Movie myMovie;
 
@@ -19,7 +20,6 @@ float sum;
 //classes
 Person[] persons;
 Average average;
-UIView uiView;
 Model model;
 
 //static vars
@@ -27,11 +27,14 @@ int NUM_PERSONS = 15;
 float MAX_VALUE = 1000.0;
 int NUM_VALUES = 0;
 
+boolean isPaused = false;
 
 int millisStart;
 int lastMillis = -1;
-
 int currentIndex = 0;
+
+ControlP5 controller;
+UIView uiView;
 
 void settings() {
 
@@ -49,6 +52,8 @@ void setup() {
   //create Persons
   setupPersons();
   setupAverage();
+
+  uiView = new UIView(this, myMovie);
 }      
 
 void setupMedia() {
@@ -70,7 +75,7 @@ void setupMedia() {
     rms.input(channel);
     myMovie = new Movie(this, model.getMediaVideoSource());
     myMovie.play();
-    uiView = new UIView(this, myMovie);
+   // myMovie.volume(0.0);
   }
 }
 
@@ -100,7 +105,7 @@ void setupPersons() {
    }*/
 
   //position Persons
-  int rowWidth = int(width / (NUM_PERSONS + 1));
+  int rowWidth = int((width * 0.5) / (NUM_PERSONS + 1));
   for (int i = 0; i < NUM_PERSONS; i ++) {
     int x = (i + 1) * rowWidth;
     //println(i + " : " + x);
@@ -108,36 +113,48 @@ void setupPersons() {
   }
 }
 
-
 void setupAverage() {
   float[] a = model.getAverageValues();
   average = new Average(a);
 }
 
-void draw() {
+/**
+* Handle app state here
+*/
+void update() {
 
+  uiView.update();
+
+  if (!isPaused) {
+    int currentMillis = millis();
+    int elapsedMillis = currentMillis - lastMillis;
+
+    if (elapsedMillis > 1000) {
+      currentIndex ++;
+      average.setIndex(currentIndex);
+      updatePersons(currentIndex, rmsScaled);
+
+      //reset 
+      lastMillis = lastMillis + 1000;
+    }
+  }
+}
+
+/**
+* Handle app rendering here
+*/
+void draw() {
+  
+  update();
+  
   // Set background color, noStroke and fill color
   background(255);//0, 0, 0);
   noStroke();
-
   image(myMovie, 0, 0, width/2, height);
 
   // Smooth the rms data by smoothing factor
   sum += (rms.analyze() - sum) * smoothFactor;  
-  float rmsScaled = sum * (height/2) * scale;
-
-  int currentMillis = millis();
-  int elapsedMillis = currentMillis - lastMillis;
-
-  if (elapsedMillis > 1000) {
-    currentIndex ++;
-    average.setIndex(currentIndex);
-    updatePersons(currentIndex, rmsScaled);
-
-    //reset 
-    lastMillis = lastMillis + 1000;
-  }
-
+  rmsScaled = sum * (height/2) * scale;
 
   pushMatrix();
   translate(width / 2, 0);
