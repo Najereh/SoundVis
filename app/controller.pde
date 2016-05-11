@@ -1,4 +1,4 @@
-class UIView {
+class Controller {
 
   ControlP5 controller;
 
@@ -16,7 +16,7 @@ class UIView {
 
   int lastUpdate = -1;
 
-  UIView(PApplet parent, Movie movie) {
+  Controller(PApplet parent, Movie movie) {
 
     myMovie = movie;
 

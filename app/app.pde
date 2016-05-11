@@ -33,8 +33,7 @@ int millisStart;
 int lastMillis = -1;
 int currentIndex = 0;
 
-ControlP5 controller;
-UIView uiView;
+Controller controller;
 
 void settings() {
 
@@ -53,7 +52,7 @@ void setup() {
   setupPersons();
   setupAverage();
 
-  uiView = new UIView(this, myMovie);
+  controller = new Controller(this, myMovie);
 }      
 
 void setupMedia() {
@@ -112,7 +111,7 @@ void setupAverage() {
  */
 void update() {
 
-  uiView.update();
+  controller.update();
 
   int currentIndex = floor(myMovie.time());
   
