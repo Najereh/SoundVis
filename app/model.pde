@@ -67,7 +67,7 @@ class Model {
       }
       count ++;
     }
-    
+
     String hours =  "0" + str(duration / 3600);
     duration = duration - (duration / 3600)*3600;
     hours = hours.substring(hours.length() - 2);
@@ -82,13 +82,21 @@ class Model {
     int count = 0;
     for (TableRow row : table.rows()) {
       if (count > 0) {
-         if (values [count - 1] == 0){
-           // HELP: How do I access the average?
-          values[count - 1] = average;}            
-       else{ 
-        float value = row.getFloat(id + 1)/ MAX_VALUE;
-        values[count - 1] = value;
-      }}
+        if (values [count - 1] == 0) {
+          // HELP: How do I access the average?
+
+          /*
+           there's a method getAverageValues() which will give you an array
+           of all averages, so using that it would look something like;
+           values[count - 1] = averages[count - 1]; ;)
+           */
+
+          values[count - 1] = average;
+        } else { 
+          float value = row.getFloat(id + 1)/ MAX_VALUE;
+          values[count - 1] = value;
+        }
+      }
 
       count ++;
     }
@@ -147,10 +155,10 @@ class Model {
     return table.getRowCount();
   }
 
-  int getCurrentTimecode(){
-     return timeCodes[currentIndex]; 
+  int getCurrentTimecode() {
+    return timeCodes[currentIndex];
   }
-  
+
   int getTimecodeStart() {
     return timecodes.getInt("start");
   }
