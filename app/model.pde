@@ -79,19 +79,12 @@ class Model {
   float[] getValuesByPerson(int id) {
     int numRows = getNumRows();
     float[] values = new float[numRows - 1];
+    float[] averages = getAverageValues();
     int count = 0;
     for (TableRow row : table.rows()) {
       if (count > 0) {
         if (values [count - 1] == 0) {
-          // HELP: How do I access the average?
-
-          /*
-           there's a method getAverageValues() which will give you an array
-           of all averages, so using that it would look something like;
-           values[count - 1] = averages[count - 1]; ;)
-           */
-
-          values[count - 1] = average;
+          values[count - 1] = averages[count - 1];
         } else { 
           float value = row.getFloat(id + 1)/ MAX_VALUE;
           values[count - 1] = value;
@@ -124,7 +117,7 @@ class Model {
 
       averageCount = averageCount/valueCounter;
       a[count] = averageCount;
-      // println(averageCount);
+      //println(averageCount);
 
       //increase count
       count ++;
