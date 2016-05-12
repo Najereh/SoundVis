@@ -158,7 +158,7 @@ void updatePersons(int index, float radius) {
 }
 
 void drawLines() {
-  stroke(255, 50);
+  stroke(255);
   for (int i = 0; i < NUM_PERSONS - 1; i ++) {
     Person p1 = persons[i];
     Person p2 = persons[i + 1];
@@ -167,7 +167,9 @@ void drawLines() {
 }
 
 void drawLines1() {
-  stroke(255, 50);
+  //opacity 50
+  //stroke(255, 50);
+  stroke(255);
   for (int i = 0; i < NUM_PERSONS; i ++) {
     Person p1 = persons[i];
     line(p1.x, p1.y, p1.x, average.y);
