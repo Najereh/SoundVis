@@ -2,7 +2,6 @@ class Model {
 
   JSONObject config;
   JSONObject media;
-  JSONObject timecodes;
   JSONObject sensors;
 
   color[] colors;
@@ -11,6 +10,9 @@ class Model {
   Table   table;
 
   int timeCodes[];
+  
+  int timeCodeStart = -1;
+  int tineCodeEnd = -1;
 
   int currentIndex = 0;
 
@@ -24,6 +26,7 @@ class Model {
 
     int mediaIndex = setup.getInt("media");
     media = config.getJSONArray("media").getJSONObject(mediaIndex);
+    
 
     int sensorIndex = setup.getInt("sensors");
     sensors = config.getJSONArray("sensors").getJSONObject(sensorIndex);

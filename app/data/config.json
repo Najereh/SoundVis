@@ -1,8 +1,7 @@
 {
   "setup": {
     "data": 0,
-    "media":0,
-    "timecodes": 0,
+    "media":1,
     "sensors" : 0,
     "fullscreen" : false
   },
@@ -17,12 +16,6 @@
       ]
     }
   ],
-  "timecodes": [
-    {
-      "start": 1461955488,
-      "end": 1461959209
-    }
-  ],
   "data": [
     {
       "src": "group_16.csv"
@@ -32,11 +25,18 @@
     {
       "type": "video",
       "videoSrc": "CWI Jazz 0.9.7.mp4",
-      "audioSrc" : "CWI Jazz 0.9.7_audio.mp3"
+      "timecodes": {
+        "start": 1461955488,
+        "end": 1461959209
+      }
     },
     {
-      "type": "audio",
-      "audioSrc": "jazz.mp3"
+      "type": "video",
+      "videoSrc": "CWI Jazz 0.9.7_2.mp4",
+      "timecodes": {
+        "start": 1461960495,
+        "end": 1461964375
+      }
     }
   ]
 }
