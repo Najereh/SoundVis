@@ -8,17 +8,17 @@
   "sensors": [
     {
       "colors": [
-        "#00b3ca",
-        "#7dd0b6",
-        "#ead98b",
-        "#f69256",
-        "#e38690"
+        "#ff00b3ca",
+        "#ff7dd0b6",
+        "#ffead98b",
+        "#fff69256",
+        "#ffe38690"
       ]
     }
   ],
   "data": [
     {
-      "src": "group_16.csv"
+      "src": "group_19.csv"
     }
   ],
   "media": [

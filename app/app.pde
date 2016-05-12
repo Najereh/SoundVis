@@ -10,7 +10,7 @@ float rmsScaled;
 Movie myMovie;
 
 // Declare a scaling factor
-float scale = 2;
+float scale = 5;
 // Declare a smooth factor
 float smoothFactor = 0.25;
 
@@ -74,7 +74,7 @@ void setupMedia() {
     rms.input(channel);
     myMovie = new Movie(this, model.getMediaVideoSource());
     myMovie.play();
-    myMovie.volume(0.0);
+    //myMovie.volume(0.0);
   }
 }
 
@@ -130,7 +130,7 @@ void draw() {
   update();
 
   // Set background color, noStroke and fill color
-  background(255);//0, 0, 0);
+  background(256);//0, 0, 0);
   noStroke();
   image(myMovie, 0, 0, width/2, height);
 
@@ -158,7 +158,7 @@ void updatePersons(int index, float radius) {
 }
 
 void drawLines() {
-  stroke(255, 50);
+  stroke(255);
   for (int i = 0; i < NUM_PERSONS - 1; i ++) {
     Person p1 = persons[i];
     Person p2 = persons[i + 1];
@@ -167,7 +167,9 @@ void drawLines() {
 }
 
 void drawLines1() {
-  stroke(255, 50);
+  //opacity 50
+  //stroke(255, 50);
+  stroke(255);
   for (int i = 0; i < NUM_PERSONS; i ++) {
     Person p1 = persons[i];
     line(p1.x, p1.y, p1.x, average.y);
