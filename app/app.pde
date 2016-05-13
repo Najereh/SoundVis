@@ -130,9 +130,9 @@ void draw() {
   update();
 
   // Set background color, noStroke and fill color
-  background(256);//0, 0, 0);
+  background(255);//0, 0, 0);
   noStroke();
-  image(myMovie, 0, 0, width/2, height);
+  /*image(myMovie, 0, 0, width/2, height);
 
   // Smooth the rms data by smoothing factor
   sum += (rms.analyze() - sum) * smoothFactor;  
@@ -147,8 +147,16 @@ void draw() {
   drawLines1();
   drawPersons(rmsScaled);
   popMatrix();
-  //todo comment this out...
-  //drawGrid();
+*/
+  
+ // if(controller.visible){
+    String tC = str(model.getCurrentTimecode());
+    fill(255);
+  //  println(tC);
+     textSize(32); 
+     text("wtf", 0, 0); 
+ // }
+  
 }
 
 void updatePersons(int index, float radius) {
