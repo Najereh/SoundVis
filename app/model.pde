@@ -12,7 +12,7 @@ class Model {
   int timeCodes[];
   
   int timeCodeStart = -1;
-  int tineCodeEnd = -1;
+  int timeCodeEnd = -1;
 
   int currentIndex = 0;
 
@@ -26,13 +26,13 @@ class Model {
 
     int mediaIndex = setup.getInt("media");
     media = config.getJSONArray("media").getJSONObject(mediaIndex);
-    
+    JSONObject timecodes = media.getJSONObject("timecodes");
+    timeCodeStart = timecodes.getInt("start");
+    timeCodeEnd = timecodes.getInt("end");
 
     int sensorIndex = setup.getInt("sensors");
     sensors = config.getJSONArray("sensors").getJSONObject(sensorIndex);
 
-    int timecodeIndex = setup.getInt("timecodes");
-    timecodes = config.getJSONArray("timecodes").getJSONObject(timecodeIndex);
 
     //SENSORDATA
     int dataIndex = setup.getInt("data");
@@ -181,11 +181,11 @@ class Model {
   }
 
   int getTimecodeStart() {
-    return timecodes.getInt("start");
+    return timeCodeStart;
   }
 
   int getTimecodeEnd() {
-    return timecodes.getInt("end");
+    return timeCodeEnd;
   }
 
   String getMediaVideoSource () {
