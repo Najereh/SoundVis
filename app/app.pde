@@ -23,7 +23,7 @@ Average average;
 Model model;
 
 //static vars
-int NUM_PERSONS = 19;
+int NUM_PERSONS = 41;
 float MAX_VALUE = 1000.0;
 int NUM_VALUES = 0;
 
