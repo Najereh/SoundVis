@@ -132,14 +132,14 @@ void draw() {
   // Set background color, noStroke and fill color
   background(256);//0, 0, 0);
   noStroke();
-  image(myMovie, 0, 0, width/2, height);
+  image(myMovie, 0, height/4, 640, 360);
 
   // Smooth the rms data by smoothing factor
   sum += (rms.analyze() - sum) * smoothFactor;  
   rmsScaled = sum * (height/2) * scale;
 
   pushMatrix();
-  translate(width / 2, 0);
+  translate(width / 2, height/3);
   fill(0, 0, 0, 100);
   rect(0, 0, width/2, height);
   average.draw(sum);

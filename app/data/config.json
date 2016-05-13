@@ -1,9 +1,9 @@
 {
   "setup": {
     "data": 0,
-    "media":0,
+    "media":1,
     "sensors" : 0,
-    "fullscreen" : false
+    "fullscreen" : true
   },
   "sensors": [
     {
