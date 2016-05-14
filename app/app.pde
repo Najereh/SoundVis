@@ -75,6 +75,7 @@ void setupMedia() {
     myMovie = new Movie(this, model.getMediaVideoSource());
     myMovie.play();
     //myMovie.volume(0.0);
+    float mt = myMovie.time();
   }
 }
 
@@ -82,7 +83,7 @@ void setupMedia() {
 void setupPersons() {
 
   NUM_VALUES = model.getNumRows();
-  println(NUM_VALUES + " total rows in table"); 
+  //println(NUM_VALUES + " total rows in table"); 
 
   //instantiate Person array
   persons = new Person[NUM_PERSONS];
@@ -149,13 +150,14 @@ void draw() {
   popMatrix();
 
   
- // if(controller.visible){
-    String tC = str(model.getCurrentTimecode());
+ if(controller.visible){
+    //String tC = str(model.getCurrentTimecode());
+    String tC = str(myMovie.time());
     fill(255);
-  //  println(tC);
-     textSize(32); 
-     text("wtf", 0, 0); 
- // }
+  //println(tC);
+     textSize(25); 
+     text(tC, 150, height-30); 
+ }
   
 }
 
@@ -195,7 +197,8 @@ void drawLines1() {
 void drawPersons(float radius) {
   for (int i = 0; i < NUM_PERSONS; i ++) {
     persons[i].setRadius(radius);
-    persons[i].draw();
+    persons[i].drawMapped();
+    //persons[i].draw();
   }
 }
 

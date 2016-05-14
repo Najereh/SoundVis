@@ -8,11 +8,17 @@ class Person {
   float targetValue;
   float EASING = 0.1;
   int id;
+  float min;
+  float max;
 
   Person(int id, float[] values) {
     //instantiate array
     this.id = id;
     this.values = values;
+    float min = min(values);
+    float max = max(values);
+    println(id, min, max);
+    
   }
 
   public void setValue(int index, float value) {
@@ -43,7 +49,28 @@ class Person {
     fill(c, 100);
     noStroke();
     ellipse(x, y, radius, radius);
-
     //image(img, x, y, radius, radius);
   }
+  
+  public void drawMapped() {
+    //ease currentValue to value of index
+    currentValue = currentValue + (targetValue - currentValue)*EASING;
+    
+    //update y position with mapping
+    y = height - (height * currentValue);
+    float m = map(y, min, max, 0, height);
+    //println(id, min, max);
+    //println("mapped value" + id +m);
+
+    //update radius
+    //radius = 10 + 60 * currentValue;
+    color c = model.getColorByIndex(id);
+    fill(c, 100);
+    noStroke();
+    ellipse(x, m, radius, radius);
+    
+    //image(img, x, y, radius, radius);
+  }
+  
+  
 }
