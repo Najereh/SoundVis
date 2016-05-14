@@ -15,9 +15,18 @@ class Person {
     //instantiate array
     this.id = id;
     this.values = values;
+    
+    //see how you're declaring the variables here?
+    //this means these variables exist in the scope of this 
+    //method only, and are different variables from the variables declared 
+    //at the start of the class. This means min and max (from above) never
+    //get values assigned
     float min = min(values);
     float max = max(values);
-    println(id, min, max);
+    
+    this.min = min;
+    this.max = max;
+   
     
   }
 
