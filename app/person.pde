@@ -67,10 +67,10 @@ class Person {
     println("height: " + height + " mapped value: " + m);
    
     //update radius
-    //radius = 10;
+    //radius = 10 + 60 * currentValue;
     
     color c = model.getColorByIndex(id);
-    fill(c, 80);
+    fill(c, 100);
     noStroke();
     ellipse(x, m, radius, radius);
   }
