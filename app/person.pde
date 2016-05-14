@@ -15,12 +15,6 @@ class Person {
     //instantiate array
     this.id = id;
     this.values = values;
-    
-    //see how you're declaring the variables here?
-    //this means these variables exist in the scope of this 
-    //method only, and are different variables from the variables declared 
-    //at the start of the class. This means min and max (from above) never
-    //get values assigned
     float min = min(values);
     float max = max(values);
     
@@ -53,11 +47,11 @@ class Person {
     y = height - (height * currentValue);
 
     //update radius
-    //radius = 10 + 60 * currentValue;
-    color c = model.getColorByIndex(id);
-    fill(c, 100);
+    radius = 30;
+    color c = (255);
+    fill(c);
     noStroke();
-    ellipse(x, y, radius, radius);
+    //ellipse(x, y, radius, radius);
     //image(img, x, y, radius, radius);
   }
   
@@ -67,18 +61,18 @@ class Person {
     
     //update y position with mapping
     y = height - (height * currentValue);
-    float m = map(y, min, max, 0, height);
-    //println(id, min, max);
-    //println("mapped value" + id +m);
-
+    println("y: " + y);
+    float m = (map(y, min, max, 100, height-100))/MAX_VALUE;
+    println("id: " + id, "min value: " + min, "max value: " + max); 
+    println("height: " + height + " mapped value: " + m);
+   
     //update radius
-    //radius = 10 + 60 * currentValue;
+    //radius = 10;
+    
     color c = model.getColorByIndex(id);
-    fill(c, 100);
+    fill(c, 80);
     noStroke();
     ellipse(x, m, radius, radius);
-    
-    //image(img, x, y, radius, radius);
   }
   
   

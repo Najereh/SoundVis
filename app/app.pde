@@ -140,7 +140,7 @@ void draw() {
   rmsScaled = sum * (height/2) * scale;
 
   pushMatrix();
-  translate(width / 2, height/3);
+  translate(width / 2, 0.0);
   fill(0, 0, 0, 100);
   rect(0, 0, width/2, height);
   average.draw(sum);
@@ -183,11 +183,8 @@ void drawLines1() {
   for (int i = 0; i < NUM_PERSONS; i ++) {
     Person p1 = persons[i];
     line(p1.x, p1.y, p1.x, average.y);
-    //line(p1.x, p1.y, p1.x-5, average.y);
     line(p1.x, p1.y, p1.x+10, average.y);
     line(p1.x, p1.y, p1.x-10, average.y);
-    //line(p1.x, p1.y, p1.x+15, average.y);
-    //line(p1.x, p1.y, p1.x-15, average.y);
     line(p1.x, p1.y, p1.x+20, average.y);
     line(p1.x, p1.y, p1.x-20, average.y);
   }
@@ -197,8 +194,8 @@ void drawLines1() {
 void drawPersons(float radius) {
   for (int i = 0; i < NUM_PERSONS; i ++) {
     persons[i].setRadius(radius);
+    persons[i].draw();
     persons[i].drawMapped();
-    //persons[i].draw();
   }
 }
 
