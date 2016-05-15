@@ -27,16 +27,10 @@ class Average {
         
     //update y position
     y = height - (height * currentValue);// + offset * 100;
-    
-    //update radius
-    //radius = 10 + 60 * currentValue;
-    
-    //color c = color(currentValue, currentValue, 255, 255*currentValue);
-    //fill(c);
-    //rect(x, y, radius, radius);
-    
-    stroke(255, 100 * offset + 100);
+  
+    stroke(255/*, 100 * offset + 100*/);
     line(0, y, width, y);
+     println("y: " + y);
   }
   
 }

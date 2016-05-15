@@ -47,7 +47,7 @@ class Person {
     y = height - (height * currentValue);
 
     //update radius
-    radius = 30;
+    
     color c = (255);
     fill(c);
     noStroke();
@@ -61,10 +61,10 @@ class Person {
     
     //update y position with mapping
     y = height - (height * currentValue);
-    println("y: " + y);
+    //println("y: " + y);
     float m = (map(y, min, max, 100, height-100))/MAX_VALUE;
-    println("id: " + id, "min value: " + min, "max value: " + max); 
-    println("height: " + height + " mapped value: " + m);
+    //println("id: " + id, "min value: " + min, "max value: " + max); 
+    //println("height: " + height + " mapped value: " + m);
    
     //update radius
     //radius = 10 + 60 * currentValue;
