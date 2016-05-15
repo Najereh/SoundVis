@@ -133,8 +133,9 @@ void draw() {
   // Set background color, noStroke and fill color
   background(256);//0, 0, 0);
   noStroke();
-  image(myMovie, 0, height/4, 640, 360);
-
+  image(myMovie, -10, height/4, 640, 360);
+  //stroke(255);
+   line((width/2)-10, 0, (width/2)-10, height);
   // Smooth the rms data by smoothing factor
   sum += (rms.analyze() - sum) * smoothFactor;  
   rmsScaled = sum * (height/2) * scale;
