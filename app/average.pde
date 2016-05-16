@@ -30,7 +30,7 @@ class Average {
   
     stroke(255/*, 100 * offset + 100*/);
     line(0, y, width, y);
-     println("y: " + y);
+   //  println("y: " + y);
   }
   
 }

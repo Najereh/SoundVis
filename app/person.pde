@@ -3,6 +3,7 @@ class Person {
   float values[];
   float x;
   float y;
+  float mY;
   float radius;
   float currentValue;
   float targetValue;
@@ -15,12 +16,12 @@ class Person {
     //instantiate array
     this.id = id;
     this.values = values;
+    
     float min = min(values);
     float max = max(values);
     
     this.min = min;
     this.max = max;
-   
     
   }
 
@@ -45,7 +46,7 @@ class Person {
 
     //update y position
     y = height - (height * currentValue);
-
+   
     //update radius
     
     color c = (255);
@@ -53,26 +54,27 @@ class Person {
     noStroke();
     //ellipse(x, y, radius, radius);
     //image(img, x, y, radius, radius);
+    
+    drawMapped();
+  }
+  
+  public float getRelativeValue(){
+   return map(currentValue, min, max, 0.0, 1.0);
   }
   
   public void drawMapped() {
-    //ease currentValue to value of index
-    currentValue = currentValue + (targetValue - currentValue)*EASING;
-    
+
     //update y position with mapping
     y = height - (height * currentValue);
-    //println("y: " + y);
-    float m = (map(y, min, max, 100, height-100))/MAX_VALUE;
-    //println("id: " + id, "min value: " + min, "max value: " + max); 
-    //println("height: " + height + " mapped value: " + m);
-   
+    mY = (map(currentValue, min, max,height, 0));// height-100, 100));
+
     //update radius
     //radius = 10 + 60 * currentValue;
     
     color c = model.getColorByIndex(id);
     fill(c, 100);
     noStroke();
-    ellipse(x, m, radius, radius);
+    ellipse(x, mY, radius, radius);
   }
   
   

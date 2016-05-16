@@ -10,7 +10,7 @@ class Model {
   Table   table;
 
   int timeCodes[];
-  
+
   int timeCodeStart = -1;
   int timeCodeEnd = -1;
 
@@ -61,6 +61,7 @@ class Model {
 
     int start = getTimecodeStart();
     int end = getTimecodeEnd();
+
     println("===SETUP TIMECODES===");
     println("total num : " + table.getRowCount());
 
@@ -89,11 +90,13 @@ class Model {
       count ++;
     }
 
+    //log data
     String hours =  "0" + str(duration / 3600);
     duration = duration - (duration / 3600)*3600;
     hours = hours.substring(hours.length() - 2);
     String minutes = "0" + str(duration/60);
     minutes = minutes.substring(minutes.length() - 2);
+
     println("FINAL :: " + hours + ":" + minutes);
   }
 
@@ -105,22 +108,24 @@ class Model {
 
   float[] getValuesByPerson(int id) {
     int numRows = getNumRows();
-    float[] values = new float[numRows - 1];
+    float[] values = new float[numRows];
     float[] averages = getAverageValues();
     int count = 0;
     for (TableRow row : table.rows()) {
-      if (count > 0) {
-        float value = row.getFloat(id + 1)/ MAX_VALUE;
 
-        if (value == 0) {
-          values[count - 1] = averages[count - 1];
-        } else { 
-          values[count - 1] = value;
-        }
+      float realValue = row.getFloat(id + 1);
+      float value = realValue/ MAX_VALUE;
+
+      if (value == 0.0) {
+
+        values[count] = averages[count];
+      } else { 
+        values[count] = value;
       }
 
       count ++;
     }
+
 
     return values;
   }
@@ -145,6 +150,7 @@ class Model {
 
       averageCount = averageCount/valueCounter;
       a[count] = averageCount;
+
       //println(averageCount);
 
       //increase count
