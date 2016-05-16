@@ -20,6 +20,9 @@ float sum;
 //classes
 Person[] persons;
 Average average;
+
+float relativeAverage;
+
 Model model;
 
 //static vars
@@ -138,6 +141,21 @@ void update() {
       updatePersons(currentIndex, rmsScaled);
     }
   }
+  
+  updateRelativeAverage();
+}
+
+void updateRelativeAverage() {
+
+  //update relative average
+  float value = 0.0;
+  for (int i = 0; i < NUM_PERSONS; i ++) {
+    value += persons[i].getRelativeValue();
+  }
+  value = value / NUM_PERSONS;
+  model.relativeAverage = value;
+  
+  relativeAverage = height - (model.relativeAverage * height);
 }
 
 void updatePersons(int index, float radius) {
@@ -159,8 +177,6 @@ void draw() {
 
   drawMovie();
 
-  //stroke(255);
-  line((width/2)-10, 0, (width/2)-10, height);
   // Smooth the rms data by smoothing factor
   sum += (rms.analyze() - sum) * smoothFactor;  
   rmsScaled = sum * (height/2) * scale;
@@ -171,19 +187,19 @@ void draw() {
   fill(0, 0, 0, 100);
   rect(0, 0, width/2, height);
 
+  //separator
+  line((width/2)-10, 0, (width/2)-10, height);
+
   drawRelativeAverage();
 
   pushMatrix();
-  scale(1.0, 3.0);
-  average.draw(sum);
+ // scale(1.0, 3.0);
+ // average.draw(sum);
   drawLines();
   drawLines1();
   popMatrix();
-
   drawPersons(rmsScaled);
-
   popMatrix();
-
 
   if (controller.visible) {
     //String tC = str(model.getCurrentTimecode());
@@ -220,11 +236,11 @@ void drawLines1() {
   stroke(255);
   for (int i = 0; i < NUM_PERSONS; i ++) {
     Person p1 = persons[i];
-    line(p1.x, p1.mY, p1.x, average.y);
-    line(p1.x, p1.mY, p1.x+10, average.y);
-    line(p1.x, p1.mY, p1.x-10, average.y);
-    line(p1.x, p1.mY, p1.x+20, average.y);
-    line(p1.x, p1.mY, p1.x-20, average.y);
+    line(p1.x, p1.mY, p1.x, relativeAverage);
+    line(p1.x, p1.mY, p1.x+10, relativeAverage);
+    line(p1.x, p1.mY, p1.x-10, relativeAverage);
+    line(p1.x, p1.mY, p1.x+20, relativeAverage);
+    line(p1.x, p1.mY, p1.x-20, relativeAverage);
   }
 }
 
@@ -237,17 +253,8 @@ void drawPersons(float radius) {
 }
 
 void drawRelativeAverage() {
-
   stroke(255, 0, 0);
-
-  float value = 0.0;
-  for (int i = 0; i < NUM_PERSONS; i ++) {
-    value += persons[i].getRelativeValue();
-  }
-
-  value = value / NUM_PERSONS;
-  value = height - (value * height);
-  line(0, value, width, value);
+  line(0, relativeAverage, width, relativeAverage);
 }
 
 void drawGrid() {

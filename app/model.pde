@@ -3,6 +3,8 @@ class Model {
   JSONObject config;
   JSONObject media;
   JSONObject sensors;
+  
+  float relativeAverage;
 
   color[] colors;
   boolean isFullScreen;
