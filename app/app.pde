@@ -10,7 +10,7 @@ float rmsScaled;
 Movie myMovie;
 
 // Declare a scaling factor
-float scale = 5;
+float scale = 3;
 // Declare a smooth factor
 float smoothFactor = 0.25;
 
@@ -203,11 +203,12 @@ void draw() {
 
   if (controller.visible) {
     //String tC = str(model.getCurrentTimecode());
-    String tC = str(myMovie.time());
+    String mT = str(myMovie.time());
+    String tC = str(model.getCurrentTimecode());
     fill(255);
     //println(tC);
-    textSize(25); 
-    text(tC, 150, height-30);
+    textSize(20); 
+    text("Seconds: " + "  " + mT + "TimeCode: " + tC, 120, height-30);
   }
 }
 
@@ -253,7 +254,7 @@ void drawPersons(float radius) {
 }
 
 void drawRelativeAverage() {
-  stroke(255, 0, 0);
+  stroke(255);
   line(0, relativeAverage, width, relativeAverage);
 }
 

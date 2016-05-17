@@ -1,7 +1,7 @@
 {
   "setup": {
     "data": 0,
-    "media":1,
+    "media":0,
     "sensors" : 0,
     "fullscreen" : true
   },
