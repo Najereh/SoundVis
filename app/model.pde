@@ -16,7 +16,7 @@ class Model {
   int timeCodeStart = -1;
   int timeCodeEnd = -1;
 
-  int currentIndex = 0;
+  int currentIndex = 1;
 
   Model() {
 

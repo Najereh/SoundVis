@@ -23,6 +23,8 @@ class Person {
     this.min = min;
     this.max = max;
     
+    this.y=values[2];
+    
   }
 
   public void setValue(int index, float value) {
@@ -37,7 +39,7 @@ class Person {
   }
 
   public void setIndex(int index) {
-    targetValue = values[index];
+    targetValue = values[1];
   }
 
   public void draw() {
@@ -45,8 +47,8 @@ class Person {
     currentValue = currentValue + (targetValue - currentValue)*EASING;
 
     //update y position
-    y = height - (height * currentValue);
-   
+    //y = height - (height * currentValue);
+   y= values[2];
     //update radius
     
     color c = (255);

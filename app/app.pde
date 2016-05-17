@@ -78,7 +78,7 @@ void setupMedia() {
     myMovie = new Movie(this, model.getMediaVideoSource());
     myMovie.play();
     //myMovie.volume(0.0);
-    float mt = myMovie.time();
+    //float mt = myMovie.time();
   }
 }
 
@@ -105,8 +105,8 @@ void setupPersons() {
     max = max(max, persons[i].max);
   }
 
-  println("total min : " + nf(min, 1, 3));
-  println("total max : " + nf(max, 1, 3));
+  //println("total min : " + nf(min, 1, 3));
+  //println("total max : " + nf(max, 1, 3));
 
   //position Persons
   int rowWidth = int((width * 0.5) / (NUM_PERSONS + 1));
