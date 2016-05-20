@@ -21,6 +21,8 @@
 
 # Gradle:
 .idea/gradle.xml
+/app/basic.mp4.txt
+/app/basic.mp4
 .idea/libraries
 
 # Mongo Explorer plugin:
