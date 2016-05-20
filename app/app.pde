@@ -1,3 +1,5 @@
+import com.hamoid.*;
+
 import processing.video.*;
 import controlP5.*;
 import processing.sound.*;
@@ -35,6 +37,8 @@ int currentIndex = 0;
 
 Controller controller;
 
+VideoExport videoExport;
+
 void settings() {
 
   model = new Model();
@@ -53,6 +57,8 @@ void setup() {
   setupAverage();
 
   controller = new Controller(this, myMovie);
+  
+  videoExport = new VideoExport(this, "basic.mp4");
 }      
 
 void setupMedia() {
@@ -148,13 +154,17 @@ void draw() {
   drawPersons(rmsScaled);
   popMatrix();
 
-
-  if (controller.visible) {
+  
+ // if(controller.visible){
     String tC = str(model.getCurrentTimecode());
     fill(255);
-    textSize(12); 
-    text(tC, width / 2 + 10, height - 20);
-  }
+  //  println(tC);
+     textSize(32); 
+     text("wtf", 0, 0); 
+ // }
+ 
+ 
+  videoExport.saveFrame();
 }
 
 void updatePersons(int index, float radius) {
