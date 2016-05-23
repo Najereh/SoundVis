@@ -26,7 +26,7 @@ float relativeAverage;
 Model model;
 
 //static vars
-int NUM_PERSONS = 41;
+int NUM_PERSONS = 20;
 float MAX_VALUE = 1000.0;
 int NUM_VALUES = 0;
 
@@ -208,7 +208,7 @@ void draw() {
     fill(255);
     //println(tC);
     textSize(20); 
-    text("Seconds: " + "  " + mT + "TimeCode: " + tC, 120, height-30);
+    text("Seconds: " + "  " + mT /*+ "TimeCode: " + tC*/, 120, height-30);
   }
 }
 
