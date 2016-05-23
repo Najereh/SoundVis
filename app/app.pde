@@ -190,13 +190,13 @@ void draw() {
   //separator
   line((width/2)-10, 0, (width/2)-10, height);
 
-  drawRelativeAverage();
+  //drawRelativeAverage();
 
   pushMatrix();
  // scale(1.0, 3.0);
  // average.draw(sum);
   drawLines();
-  drawLines1();
+  //drawLines1();
   popMatrix();
   drawPersons(rmsScaled);
   popMatrix();
@@ -226,12 +226,22 @@ void drawLines() {
   for (int i = 0; i < NUM_PERSONS - 1; i ++) {
     Person p1 = persons[i];
     Person p2 = persons[i + 1];
-    //   line(p1.x, p1.y, p2.x, p2.y);
     line(p1.x, p1.mY, p2.x, p2.mY);
   }
+  for (int i = 0; i < NUM_PERSONS - 2; i ++) {
+    Person p1 = persons[i];
+    Person p3 = persons[i + 2];
+   line(p1.x, p1.mY, p3.x, p3.mY);
+  }
+  for (int i = 0; i < NUM_PERSONS - 3; i ++) {
+    Person p1 = persons[i];
+    Person p3 = persons[i + 2];
+    Person p4 = persons[i + 3];
+   line(p1.x, p1.mY, p4.x, p4.mY);
+  }
 }
-
-void drawLines1() {
+// LINES to relative average
+/*void drawLines1() {
   //opacity 50
   //stroke(255, 50);
   stroke(255);
@@ -243,7 +253,7 @@ void drawLines1() {
     line(p1.x, p1.mY, p1.x+20, relativeAverage);
     line(p1.x, p1.mY, p1.x-20, relativeAverage);
   }
-}
+}*/
 
 
 void drawPersons(float radius) {
